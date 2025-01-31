@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to Blockchain Chat</h1>
+    <p class="lead">A secure and decentralized communication system.</p>
+    <hr class="my-4">
+    <p>Get started by registering or logging in.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('main.register') }}" role="button">Register</a>
+    <a class="btn btn-success btn-lg" href="{{ url_for('main.login') }}" role="button">Login</a>
+</div>
+{% endblock %}

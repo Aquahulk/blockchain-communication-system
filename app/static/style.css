@@ -1,0 +1,14 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.jumbotron {
+    background-color: #e9ecef;
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.list-group-item {
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}

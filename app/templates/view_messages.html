@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Your Messages</h1>
+    {% if messages %}
+        <div class="list-group">
+            {% for message in messages %}
+                <div class="list-group-item">
+                    <strong>From:</strong> {{ message.sender }}<br>
+                    <strong>Message:</strong> {{ message.content }}<br>
+                    <strong>Timestamp:</strong> {{ message.timestamp }}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No messages found.</p>
+    {% endif %}
+</div>
+{% endblock %}
