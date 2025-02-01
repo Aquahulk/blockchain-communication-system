@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from app.models import User, Message
 from app.blockchain import create_genesis_block, create_new_block
 from app import db
+from cryptography.hazmat.primitives.asymmetric import ed25519
 
 main = Blueprint('main', __name__)
 
@@ -78,3 +79,18 @@ def view_messages():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@main.route('/web3_login', methods=['POST'])
+def web3_login():
+    data = request.json
+    public_key = data['public_key']
+    signature = data['signature']
+    message = data['message']
+
+    # Verify the signature
+    try:
+        public_key = ed25519.Ed25519PublicKey.from_public_bytes(bytes.fromhex(public_key))
+        public_key.verify(bytes.fromhex(signature), message.encode())
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400

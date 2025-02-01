@@ -7,5 +7,35 @@
     <p>Get started by registering or logging in.</p>
     <a class="btn btn-primary btn-lg" href="{{ url_for('main.register') }}" role="button">Register</a>
     <a class="btn btn-success btn-lg" href="{{ url_for('main.login') }}" role="button">Login</a>
+    <button id="web3Login" class="btn btn-warning btn-lg">Sign In with Web3 Wallet</button>
 </div>
+
+<script>
+    // Web3 Wallet Sign In
+    document.getElementById("web3Login").addEventListener("click", () => {
+        const message = "Sign in to Blockchain Chat";
+        window.postMessage({ action: "requestSignature", message }, "*");
+
+        // Listen for the signature
+        window.addEventListener("message", (event) => {
+            if (event.data.action === "signature") {
+                const signature = event.data.signature;
+                // Send the signature and public key to the backend
+                fetch("/web3_login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ public_key: "user_public_key", signature, message }),
+                }).then((response) => response.json())
+                  .then((data) => {
+                      if (data.status === "success") {
+                          alert("Signed in successfully!");
+                          window.location.href = "/dashboard";
+                      } else {
+                          alert("Error: " + data.message);
+                      }
+                  });
+            }
+        });
+    });
+</script>
 {% endblock %}
