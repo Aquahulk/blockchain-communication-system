@@ -1,6 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask import Flask
+
+app = Flask(__name__)  # Create Flask app
+
+# Import routes (to prevent circular import issues)
+from app import routes
 
 db = SQLAlchemy()
 login_manager = LoginManager()
