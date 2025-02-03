@@ -1,21 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center">Welcome, {{ username }}!</h1>
+    <h1 class="text-center">Welcome!</h1>
     <div class="text-center mt-4">
         <a href="{{ url_for('main.send_message') }}" class="btn btn-primary btn-lg">Send Message</a>
         <a href="{{ url_for('main.view_messages') }}" class="btn btn-secondary btn-lg">View Messages</a>
     </div>
     <div class="mt-4">
         <h3>Your Public Key:</h3>
-        <p id="publicKey">Loading...</p>
+        <p id="publicKey">{{ current_user.public_key }}</p>
     </div>
 </div>
-
-<script>
-    // Fetch and display the public key
-    browser.storage.local.get(["publicKey"]).then((result) => {
-        document.getElementById("publicKey").textContent = result.publicKey || "Not available";
-    });
-</script>
 {% endblock %}

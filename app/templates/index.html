@@ -4,38 +4,44 @@
     <h1 class="display-4">Welcome to Blockchain Chat</h1>
     <p class="lead">A secure and decentralized communication system.</p>
     <hr class="my-4">
-    <p>Get started by registering or logging in.</p>
-    <a class="btn btn-primary btn-lg" href="{{ url_for('main.register') }}" role="button">Register</a>
-    <a class="btn btn-success btn-lg" href="{{ url_for('main.login') }}" role="button">Login</a>
-    <button id="web3Login" class="btn btn-warning btn-lg">Sign In with Web3 Wallet</button>
+    <p>Get started by signing in with MetaMask.</p>
+    <button id="metamaskLogin" class="btn btn-warning btn-lg">Sign In with MetaMask</button>
 </div>
 
 <script>
-    // Web3 Wallet Sign In
-    document.getElementById("web3Login").addEventListener("click", () => {
-        const message = "Sign in to Blockchain Chat";
-        window.postMessage({ action: "requestSignature", message }, "*");
+    // MetaMask Login
+    document.getElementById("metamaskLogin").addEventListener("click", async () => {
+        // Check if MetaMask is installed
+        if (typeof window.ethereum === "undefined") {
+            alert("Please install MetaMask to use this app.");
+            return;
+        }
 
-        // Listen for the signature
-        window.addEventListener("message", (event) => {
-            if (event.data.action === "signature") {
-                const signature = event.data.signature;
-                // Send the signature and public key to the backend
-                fetch("/web3_login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ public_key: "user_public_key", signature, message }),
-                }).then((response) => response.json())
-                  .then((data) => {
-                      if (data.status === "success") {
-                          alert("Signed in successfully!");
-                          window.location.href = "/dashboard";
-                      } else {
-                          alert("Error: " + data.message);
-                      }
-                  });
-            }
+        // Request account access
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        const userAddress = accounts[0]; // User's Ethereum address (public key)
+
+        // Sign a message for authentication
+        const message = "Sign in to Blockchain Chat";
+        const signature = await ethereum.request({
+            method: "personal_sign",
+            params: [message, userAddress],
         });
+
+        // Send the address and signature to the backend for verification
+        const response = await fetch("/web3_login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ public_key: userAddress, signature, message }),
+        });
+
+        const data = await response.json();
+        if (data.status === "success") {
+            alert("Signed in successfully!");
+            window.location.href = "/dashboard";
+        } else {
+            alert("Error: " + data.message);
+        }
     });
 </script>
 {% endblock %}
