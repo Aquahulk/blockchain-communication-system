@@ -11,8 +11,6 @@ main = Blueprint('main', __name__)
 
 # Initialize blockchain
 blockchain = [create_genesis_block()]
-from flask import Flask
-app = Flask(__name__)
 
 @main.route('/')
 def index():
