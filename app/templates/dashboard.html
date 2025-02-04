@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container">
-    <h1 class="text-center">Welcome!</h1>
-    <div class="text-center mt-4">
-        <a href="{{ url_for('main.send_message') }}" class="btn btn-primary btn-lg">Send Message</a>
-        <a href="{{ url_for('main.view_messages') }}" class="btn btn-secondary btn-lg">View Messages</a>
-    </div>
-    <div class="mt-4">
-        <h3>Your Public Key:</h3>
-        <p id="publicKey">{{ current_user.public_key }}</p>
+<div class="container text-center">
+    <div class="dashboard-box">
+        <h1>🚀 Welcome to Your Dashboard</h1>
+        <div class="mt-4">
+            <a href="{{ url_for('main.send_message') }}" class="btn btn-primary btn-lg">✉️ Send Message</a>
+            <a href="{{ url_for('main.view_messages') }}" class="btn btn-secondary btn-lg">📜 View Messages</a>
+        </div>
+        <div class="mt-4 public-key-box">
+            <h3>Your Public Key:</h3>
+            <p id="publicKey">{{ current_user.public_key }}</p>
+        </div>
     </div>
 </div>
 {% endblock %}
