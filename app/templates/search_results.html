@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Futuristic Galaxy Background -->
+<div class="galaxy-background">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="galaxy-background">
+        <!-- Planets -->
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-fluid main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card futuristic-card">
+                <div class="card-body">
+                    <h2 class="glow-text">Search Results for "{{ query }}"</h2>
+                    <div class="search-results">
+                        {% if search_results %}
+                            {% for post in search_results %}
+                                <div class="post">
+                                    <strong>{{ post.author }}:</strong>
+                                    <p>{{ post.content }}</p>
+                                    <small class="text-muted">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="glow-text">No results found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

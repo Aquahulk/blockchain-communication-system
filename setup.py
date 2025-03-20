@@ -10,5 +10,5 @@ setup(
         "flask-sqlalchemy",
         "flask-migrate",
     ],
-    python_requires=">=3.7",                 # Specify Python version compatibility
+    python_requires=">=3.9",                 # Specify Python version compatibility
 )

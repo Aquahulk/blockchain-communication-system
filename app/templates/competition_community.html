@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="glow-text">Competition Community</h1>
+        <p class="lead">Join the competition and showcase your skills.</p>
+    </div>
+
+    <!-- Announcements & Updates -->
+    <div class="mb-5">
+        <h2 class="glow-text">Latest News & Updates</h2>
+        <div class="row">
+            {% for announcement in announcements %}
+                <div class="col-md-4 mb-3">
+                    <div class="card futuristic-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ announcement.title }}</h5>
+                            <p class="card-text">{{ announcement.content|truncate(100) }}</p>
+                            <a href="#" class="btn btn-info">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Forum/Discussion Board -->
+    <div class="mb-5">
+        <h2 class="glow-text">Competition Discussions</h2>
+        <div class="card futuristic-card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('main.create_post') }}">
+                    <textarea class="form-control mb-2" name="content" placeholder="Start a discussion..." required></textarea>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </form>
+                <hr>
+                {% for post in posts %}
+                    <div class="mb-3">
+                        <strong>{{ post.author }}</strong>
+                        <p>{{ post.content }}</p>
+                        <small class="text-muted">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

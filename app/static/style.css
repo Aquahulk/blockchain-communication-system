@@ -57,3 +57,122 @@ body {
     color: #0dcaf0;
     border: 1px solid #0dcaf0;
 }
+
+/* Group Chat Box */
+.group-chat-box {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+/* Chat Messages */
+.chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #0dcaf0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #292929;
+}
+
+/* Individual Message */
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #0dcaf0;
+    color: #ffffff;
+}
+
+/* List Group Items */
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f1f1f;
+    border: 1px solid #0dcaf0;
+    color: #ffffff;
+}
+
+/* Form Styling */
+.form-control {
+    background-color: #292929;
+    border: 1px solid #0dcaf0;
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background-color: #292929;
+    border: 1px solid #0dcaf0;
+    color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+/* Buttons in Group Chat */
+.btn-primary, .btn-success, .btn-danger {
+    transition: 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #0dcaf0;
+    border: 1px solid #0dcaf0;
+    color: #121212;
+}
+
+.btn-primary:hover {
+    background-color: #0aa8c7;
+    border: 1px solid #0aa8c7;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: 1px solid #28a745;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border: 1px solid #218838;
+}
+
+.btn-danger {
+    background-color: #ff4757;
+    border: 1px solid #ff4757;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #e8414d;
+    border: 1px solid #e8414d;
+}
+
+/* Resize images in chat messages */
+.chat-messages img {
+    max-width: 300px;  /* Adjust as needed */
+    max-height: 300px; /* Adjust as needed */
+    width: auto;
+    height: auto;
+    border-radius: 8px; /* Optional: Add rounded corners */
+    margin-top: 10px;   /* Optional: Add some spacing */
+}
+
+/* Glowing Text */
+.glow-text {
+    color: #0dcaf0;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+}
+
+/* Futuristic Card */
+.futuristic-card {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.futuristic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}

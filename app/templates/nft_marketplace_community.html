@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Marketplace</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* [Existing CSS remains unchanged, included for completeness] */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, #000428, #000000);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        @keyframes moveStars {
+            0% { background-position: 0 0; }
+            100% { background-position: 10000px 5000px; }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            animation: moveStars 200s linear infinite;
+            z-index: -1;
+        }
+
+        .space-objects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .planet {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff7e5f, #feb47b);
+            box-shadow: 0 0 50px rgba(255, 126, 95, 0.8);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .nft-figure {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .nft-figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .planet-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .planet-2 { top: 30%; left: 70%; animation-delay: 2s; }
+        .planet-3 { top: 60%; left: 40%; animation-delay: 4s; }
+        .nft-ape { top: 20%; left: 80%; animation-delay: 1s; }
+        .nft-punk { top: 50%; left: 20%; animation-delay: 3s; }
+        .nft-doge { top: 70%; left: 60%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .content-overlay {
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(3px);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #00ffcc !important;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        }
+
+        .search-bar {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .nft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .nft-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nft-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nft-image {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .nft-name {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffcc, #00b3ff);
+            border: none;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00ffcc, #00b3ff);
+            border: none;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        .fixed-post-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chain-selector {
+            margin: 0 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .chain-logos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            flex-wrap: wrap;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .chain-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .chain-item img {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+
+        .chain-name {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+
+        .content {
+            position: absolute;
+            top: 150px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .profile-page {
+            position: absolute;
+            top: 70px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(3px);
+        }
+
+        .profile-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #00ffcc;
+            object-fit: cover;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .profile-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .profile-tabs .btn-primary {
+            margin-bottom: 10px;
+        }
+
+        .dashboard-sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.5);
+            transition: right 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dashboard-sidebar.active {
+            right: 0;
+        }
+
+        .dashboard-sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-sidebar-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+
+        .dashboard-sidebar-header button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .dashboard-sidebar-content {
+            padding: 20px;
+        }
+
+        .dashboard-sidebar-content ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard-sidebar-content ul li {
+            margin-bottom: 15px;
+        }
+
+        .dashboard-sidebar-content ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-sidebar-content ul li a:hover {
+            color: #00ffcc;
+        }
+
+        .modal-content {
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            border: 1px solid #00ffcc;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00ffcc;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-color: #00ffcc;
+            box-shadow: 0 0 5px #00ffcc;
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00ffcc;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Space-Themed Background -->
+    <div class="stars"></div>
+    <div class="space-objects">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+        <div class="nft-figure nft-ape">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Bored_Ape_Yacht_Club_%28BAYC%29_Logo.svg/1200px-Bored_Ape_Yacht_Club_%28BAYC%29_Logo.svg.png" alt="Bored Ape">
+        </div>
+        <div class="nft-figure nft-punk">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Cryptopunk_6046.png/1200px-Cryptopunk_6046.png" alt="CryptoPunk">
+        </div>
+        <div class="nft-figure nft-doge">
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme.jpg" alt="Doge">
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand glow-text" href="#">🚀 NFT Marketplace</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <input type="text" placeholder="Search..." class="search-bar">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showDiscover()">Discover</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showListNFTModal()">Mint</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showListNFTModal()">Create</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="connectWallet" class="btn btn-primary nav-link">Connect Wallet</button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="toggleDashboard()" class="nav-link">DigitalBoard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chain Logos -->
+    <div class="chain-logos">
+        <div class="chain-item" onclick="showChainNFTs('all')">
+            <img src="https://via.placeholder.com/40" alt="All NFTs Logo">
+            <span class="chain-name">All NFTs</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('ethereum')">
+            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum Logo">
+            <span class="chain-name">ETH</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('polygon')">
+            <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon Logo">
+            <span class="chain-name">POLYGON</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('bsc')">
+            <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Binance Logo">
+            <span class="chain-name">BSC</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('arbitrum')">
+            <img src="https://cryptologos.cc/logos/arbitrum-arb-logo.png" alt="Arbitrum Logo">
+            <span class="chain-name">ARB</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container content-overlay">
+            <h1 class="text-center mb-4">NFT Marketplace</h1>
+            <div class="text-center mb-4">
+                <select id="chainSelector" class="chain-selector">
+                    <option value="ethereum">Ethereum</option>
+                    <option value="polygon">Polygon</option>
+                    <option value="bsc">Binance Smart Chain</option>
+                    <option value="arbitrum">Arbitrum</option>
+                </select>
+                <button id="fetchNFTs" class="btn btn-success">Fetch My NFTs</button>
+            </div>
+            <div class="loader" id="nftLoader"></div>
+            <div class="nft-grid" id="nftList"></div>
+            <div class="fixed-post-button">
+                <a href="#" onclick="showListNFTModal()" class="btn btn-primary">List NFT</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="profile-page" id="profilePage" style="display: none;">
+        <div class="container content-overlay">
+            <div class="profile-header text-center mb-4">
+                <button class="btn btn-primary mb-3" onclick="backToMain()">Back to Marketplace</button>
+                <div class="avatar-container">
+                    <img src="https://via.placeholder.com/100" alt="Avatar" id="avatarImage" class="avatar-img">
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <button class="btn btn-primary mt-2" onclick="document.getElementById('avatarUpload').click()">Change Avatar</button>
+                </div>
+                <h2 id="walletAddressDisplay">Wallet: Not Connected</h2>
+                <p id="nftCountDisplay">Number of NFTs: 0</p>
+            </div>
+            <div class="profile-tabs mb-4">
+                <button class="btn btn-primary me-2" onclick="showProfileTab('collected')">Collected NFTs</button>
+                <button class="btn btn-primary me-2" onclick="showProfileTab('featured')">Featured NFTs</button>
+                <button class="btn btn-primary me-2" onclick="showProfileTab('watchlist')">Watchlist NFTs</button>
+            </div>
+            <div class="nft-grid" id="profileNFTList"></div>
+        </div>
+    </div>
+
+    <!-- List NFT Modal -->
+    <div class="modal fade" id="listNFTModal" tabindex="-1" aria-labelledby="listNFTModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listNFTModalLabel">List Your NFT</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="listNFTForm">
+                        <div class="mb-3">
+                            <label for="nftName" class="form-label">NFT Name</label>
+                            <input type="text" class="form-control" id="nftName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nftDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="nftDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nftImageFile" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="nftImageFile" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nftPrice" class="form-label">Price (ETH)</label>
+                            <input type="number" step="0.01" class="form-control" id="nftPrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nftChain" class="form-label">Blockchain</label>
+                            <select class="form-control" id="nftChain" required>
+                                <option value="ethereum">Ethereum</option>
+                                <option value="polygon">Polygon</option>
+                                <option value="bsc">Binance Smart Chain</option>
+                                <option value="arbitrum">Arbitrum</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">List NFT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Sidebar -->
+    <div class="dashboard-sidebar" id="dashboardSidebar">
+        <div class="dashboard-sidebar-header">
+            <h3>Dashboard</h3>
+            <button onclick="toggleDashboard()">×</button>
+        </div>
+        <div class="dashboard-sidebar-content">
+            <ul>
+                <li><a href="#" onclick="showProfilePage()">Profile</a></li>
+                <li><a href="#">Watchlist</a></li>
+                <li><a href="#">Deals</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Language</a></li>
+                <li><a href="#">Dark Mode</a></li>
+                <li><a href="#">Learn</a></li>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Web3 and Alchemy API Integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <script>
+        const marketplaceABI = [
+            {
+                "inputs": [
+                    { "internalType": "uint256", "name": "nftId", "type": "uint256" },
+                    { "internalType": "uint256", "name": "price", "type": "uint256" }
+                ],
+                "name": "buyNFT",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            }
+        ];
+
+        let walletAddress = "";
+        const alchemyAPIKey = "BVErC47b3fudE-9hxfZmS1mHGMPCzUhg";
+        const marketplaceAddress = "0xYourMarketplaceContractAddress";
+        const web3 = new Web3(window.ethereum);
+        let listedNFTs = JSON.parse(localStorage.getItem("listedNFTs")) || [];
+        let userAvatar = localStorage.getItem("userAvatar") || "https://via.placeholder.com/100";
+        document.getElementById("avatarImage").src = userAvatar;
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                    walletAddress = accounts[0];
+                    alert(`Connected: ${walletAddress}`);
+                    document.getElementById("connectWallet").textContent = `Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+                    document.getElementById("connectWallet").disabled = true;
+                    document.getElementById("fetchNFTs").disabled = false;
+                    updateProfileHeader();
+                } catch (error) {
+                    console.error("User denied account access", error);
+                    alert("You need to allow wallet access.");
+                }
+            } else {
+                alert("MetaMask not detected! Please install it.");
+            }
+        }
+
+        async function fetchNFTs() {
+            if (!walletAddress) {
+                alert("Please connect your wallet first!");
+                return;
+            }
+
+            const chain = document.getElementById("chainSelector").value;
+            const nftList = document.getElementById("nftList");
+            const loader = document.getElementById("nftLoader");
+
+            loader.style.display = "block";
+            nftList.style.display = "none";
+
+            let apiUrl;
+            switch (chain) {
+                case "ethereum": apiUrl = `https://eth-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "polygon": apiUrl = `https://polygon-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "bsc": apiUrl = `https://bsc-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "arbitrum": apiUrl = `https://arb-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                default:
+                    alert("Unsupported chain selected!");
+                    loader.style.display = "none";
+                    nftList.style.display = "grid";
+                    return;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                nftList.innerHTML = "";
+
+                if (data.ownedNfts.length === 0) {
+                    nftList.innerHTML = `<p class='text-center'>No NFTs found in this wallet on ${chain}. Try listing a new NFT!</p>`;
+                    loader.style.display = "none";
+                    nftList.style.display = "grid";
+                    return;
+                }
+
+                data.ownedNfts.forEach(nft => {
+                    const priceInEth = "0.1";
+                    const nftElement = document.createElement("div");
+                    nftElement.classList.add("nft-card");
+                    nftElement.innerHTML = `
+                        <img src="${nft.media[0]?.gateway || 'https://via.placeholder.com/150'}" alt="${nft.title}" class="nft-image">
+                        <h5 class="nft-name">${nft.title || "Unnamed NFT"}</h5>
+                        <p>${nft.description || "No description available."}</p>
+                        <p><strong>Contract:</strong> ${nft.contract.address}</p>
+                        <p><strong>Chain:</strong> ${chain}</p>
+                        <p><strong>Price:</strong> ${priceInEth} ETH</p>
+                        <button class="btn btn-success buy-nft-btn" data-nft-id="${nft.id.tokenId}" data-price="${priceInEth}">Buy Now</button>
+                    `;
+                    nftList.appendChild(nftElement);
+                });
+
+                document.querySelectorAll(".buy-nft-btn").forEach(button => {
+                    button.addEventListener("click", handleBuyNFT);
+                });
+
+                renderListedNFTs();
+            } catch (error) {
+                console.error("Error fetching NFTs:", error);
+                alert(`Failed to fetch NFTs on ${chain}. Check API Key and wallet address.`);
+                renderListedNFTs();
+            } finally {
+                loader.style.display = "none";
+                nftList.style.display = "grid";
+            }
+        }
+
+        async function handleBuyNFT(event) {
+            const nftId = event.target.getAttribute("data-nft-id");
+            const priceInEth = event.target.getAttribute("data-price");
+
+            if (!walletAddress) {
+                alert("Please connect your wallet first!");
+                return;
+            }
+
+            try {
+                const marketplaceContract = new web3.eth.Contract(marketplaceABI, marketplaceAddress);
+                const priceInWei = web3.utils.toWei(priceInEth, "ether");
+
+                const tx = await marketplaceContract.methods.buyNFT(nftId, priceInWei)
+                    .send({
+                        from: walletAddress,
+                        value: priceInWei,
+                        gas: 300000
+                    });
+
+                alert(`NFT bought successfully! Transaction Hash: ${tx.transactionHash}`);
+            } catch (error) {
+                console.error("Error buying NFT:", error);
+                alert("Failed to buy NFT. Check console for details.");
+            }
+        }
+
+        function renderListedNFTs() {
+            const nftList = document.getElementById("nftList");
+            listedNFTs.forEach(nft => {
+                const nftElement = document.createElement("div");
+                nftElement.classList.add("nft-card");
+                nftElement.innerHTML = `
+                    <img src="${nft.image}" alt="${nft.name}" class="nft-image">
+                    <h5 class="nft-name">${nft.name}</h5>
+                    <p>${nft.description}</p>
+                    <p><strong>Contract:</strong> ${nft.contract}</p>
+                    <p><strong>Chain:</strong> ${nft.chain}</p>
+                    <p><strong>Price:</strong> ${nft.price}</p>
+                    <button class="btn btn-success buy-nft-btn" data-nft-id="${nft.id}" data-price="${nft.price.split(' ')[0]}">Buy Now</button>
+                `;
+                nftList.appendChild(nftElement);
+            });
+
+            document.querySelectorAll(".buy-nft-btn").forEach(button => {
+                button.addEventListener("click", handleBuyNFT);
+            });
+        }
+
+        function showListNFTModal() {
+            const modal = new bootstrap.Modal(document.getElementById("listNFTModal"));
+            modal.show();
+        }
+
+        document.getElementById("listNFTForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById("nftName").value;
+            const description = document.getElementById("nftDescription").value;
+            const imageFile = document.getElementById("nftImageFile").files[0];
+            const price = document.getElementById("nftPrice").value;
+            const chain = document.getElementById("nftChain").value;
+
+            if (!walletAddress) {
+                alert("Please connect your wallet first!");
+                return;
+            }
+
+            if (!imageFile) {
+                alert("Please upload an image!");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageBase64 = e.target.result;
+
+                const imagePath = `static/uploads/${Date.now()}_${imageFile.name}`;
+                localStorage.setItem(imagePath, imageBase64);
+
+                const newNFT = {
+                    id: Date.now(),
+                    name,
+                    description,
+                    image: imageBase64,
+                    price: `${price} ETH`,
+                    chain,
+                    contract: "0xSimulatedContract"
+                };
+
+                listedNFTs.push(newNFT);
+                localStorage.setItem("listedNFTs", JSON.stringify(listedNFTs));
+
+                const nftList = document.getElementById("nftList");
+                nftList.innerHTML = "";
+                renderListedNFTs();
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById("listNFTModal"));
+                modal.hide();
+
+                document.getElementById("listNFTForm").reset();
+
+                alert("NFT listed successfully! (Simulated)");
+            };
+            reader.readAsDataURL(imageFile);
+        });
+
+        function toggleDashboard() {
+            const sidebar = document.getElementById("dashboardSidebar");
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                document.getElementById("profilePage").style.display = "none";
+                document.querySelector(".content").style.display = "block";
+                document.querySelector(".chain-logos").style.display = "flex";
+            }
+        }
+
+        function showDiscover() {
+            document.getElementById("nftList").style.display = "grid";
+            document.querySelector(".chain-logos").style.display = "flex";
+            document.getElementById("profilePage").style.display = "none";
+            document.querySelector(".content").style.display = "block";
+            document.getElementById("dashboardSidebar").classList.remove("active");
+        }
+
+        function showChainNFTs(chain) {
+            const nftList = document.getElementById("nftList");
+            const nftCards = nftList.getElementsByClassName("nft-card");
+
+            Array.from(nftCards).forEach(card => {
+                const cardChain = card.querySelector("p:nth-child(5)").textContent.split(": ")[1].toLowerCase();
+                if (chain === "all" || cardChain === chain) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        document.getElementById("avatarUpload").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    userAvatar = e.target.result;
+                    localStorage.setItem("userAvatar", userAvatar);
+                    document.getElementById("avatarImage").src = userAvatar;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function showProfilePage() {
+            document.querySelector(".content").style.display = "none";
+            document.querySelector(".chain-logos").style.display = "none";
+            document.getElementById("profilePage").style.display = "block";
+            document.getElementById("dashboardSidebar").classList.remove("active");
+            updateProfileHeader();
+            showProfileTab("collected");
+        }
+
+        function updateProfileHeader() {
+            document.getElementById("walletAddressDisplay").textContent = walletAddress
+                ? `Wallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+                : "Wallet: Not Connected";
+            const nftCount = document.querySelectorAll("#profileNFTList .nft-card").length;
+            document.getElementById("nftCountDisplay").textContent = `Number of NFTs: ${nftCount}`;
+        }
+
+        function showProfileTab(tab) {
+            const nftList = document.getElementById("profileNFTList");
+            nftList.innerHTML = "";
+
+            if (tab === "collected") {
+                fetchNFTsForProfile();
+            } else if (tab === "featured") {
+                nftList.innerHTML = `<p class='text-center'>Featured NFTs coming soon!</p>`;
+            } else if (tab === "watchlist") {
+                nftList.innerHTML = `<p class='text-center'>Watchlist NFTs coming soon!</p>`;
+            }
+            updateProfileHeader();
+        }
+
+        async function fetchNFTsForProfile() {
+            if (!walletAddress) {
+                alert("Please connect your wallet first!");
+                return;
+            }
+
+            const chain = document.getElementById("chainSelector").value;
+            let apiUrl;
+
+            switch (chain) {
+                case "ethereum": apiUrl = `https://eth-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "polygon": apiUrl = `https://polygon-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "bsc": apiUrl = `https://bsc-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                case "arbitrum": apiUrl = `https://arb-mainnet.g.alchemy.com/v2/${alchemyAPIKey}/getNFTs/?owner=${walletAddress}`; break;
+                default:
+                    alert("Unsupported chain selected!");
+                    return;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const nftList = document.getElementById("profileNFTList");
+                nftList.innerHTML = "";
+
+                if (data.ownedNfts.length === 0) {
+                    nftList.innerHTML = `<p class='text-center'>No NFTs found in this wallet on ${chain}.</p>`;
+                    updateProfileHeader();
+                    return;
+                }
+
+                data.ownedNfts.forEach(nft => {
+                    const nftElement = document.createElement("div");
+                    nftElement.classList.add("nft-card");
+                    nftElement.innerHTML = `
+                        <img src="${nft.media[0]?.gateway || 'https://via.placeholder.com/150'}" alt="${nft.title}" class="nft-image">
+                        <h5 class="nft-name">${nft.title || "Unnamed NFT"}</h5>
+                        <p>${nft.description || "No description available."}</p>
+                        <p><strong>Contract:</strong> ${nft.contract.address}</p>
+                        <p><strong>Chain:</strong> ${chain}</p>
+                    `;
+                    nftList.appendChild(nftElement);
+                });
+
+                updateProfileHeader();
+            } catch (error) {
+                console.error("Error fetching NFTs:", error);
+                alert(`Failed to fetch NFTs on ${chain}. Check API Key and wallet address.`);
+            }
+        }
+
+        function backToMain() {
+            document.getElementById("profilePage").style.display = "none";
+            document.querySelector(".content").style.display = "block";
+            document.querySelector(".chain-logos").style.display = "flex";
+            document.getElementById("dashboardSidebar").classList.remove("active");
+        }
+
+        document.getElementById("connectWallet").addEventListener("click", connectWallet);
+        document.getElementById("fetchNFTs").addEventListener("click", fetchNFTs);
+        renderListedNFTs();
+    </script>
+</body>
+</html>

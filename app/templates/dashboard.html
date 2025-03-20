@@ -1,15 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container text-center">
-    <div class="dashboard-box">
-        <h1>🚀 Welcome to Your Dashboard</h1>
-        <div class="mt-4">
-            <a href="{{ url_for('main.send_message') }}" class="btn btn-primary btn-lg">✉️ Send Message</a>
-            <a href="{{ url_for('main.view_messages') }}" class="btn btn-secondary btn-lg">📜 View Messages</a>
+<div class="container">
+    <div class="row">
+        <!-- Left Side: Dashboard Content -->
+        <div class="col-md-8">
+            <div class="dashboard-box">
+                <h1>🚀 Welcome to Your Dashboard</h1>
+                <div class="mt-4">
+                    <a href="{{ url_for('main.send_message') }}" class="btn btn-primary btn-lg">✉️ Send Message</a>
+                    <a href="{{ url_for('main.view_messages') }}" class="btn btn-secondary btn-lg">📜 View Messages</a>
+                    <a href="{{ url_for('main.community') }}" class="btn btn-info btn-lg">🌐 Community</a>
+                </div>
+                <div class="mt-4 public-key-box">
+                    <h3>Your Public Key:</h3>
+                    <p id="publicKey">{{ current_user.public_key }}</p>
+                </div>
+            </div>
         </div>
-        <div class="mt-4 public-key-box">
-            <h3>Your Public Key:</h3>
-            <p id="publicKey">{{ current_user.public_key }}</p>
+
+        <!-- Right Side: Group List -->
+        <div class="col-md-4">
+            <div class="group-list">
+                <h3>Your Groups</h3>
+                <ul class="list-group">
+                    {% if groups %}
+                        {% for group in groups %}
+                            <li class="list-group-item">
+                                <a href="{{ url_for('main.group_chat', group_id=group.id) }}">
+                                    {{ group.name }}
+                                </a>
+                                {% if group.admin_public_key == current_user.public_key %}
+                                    <span class="badge bg-primary">Admin</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">No groups found.</li>
+                    {% endif %}
+                </ul>
+                <div class="mt-3">
+                    <a href="{{ url_for('main.create_group') }}" class="btn btn-info btn-sm">Create Group</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,902 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Futuristic Galaxy Background -->
+<div class="galaxy-background">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="galaxy-background">
+        <!-- Planets -->
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+    </div>
+</div>
+
+<!-- Sidebar Toggle Icon -->
+<div class="sidebar-toggle" onclick="toggleSidebar()">
+    <span class="toggle-icon">☰</span>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3 class="glow-text">🚀 Web3 Community</h3>
+    </div>
+    <div class="sidebar-content">
+        <!-- Dashboard Link -->
+        <div class="sidebar-section">
+            <h4 class="glow-text">Dashboard</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.dashboard') }}">Go to Dashboard</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Other Community Links -->
+        <div class="sidebar-section">
+            <h4 class="glow-text">Communities</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.trading_community') }}">Trading</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.competition_community') }}">Competition</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.blockchain_community') }}">Blockchain</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.nft_marketplace_community') }}">NFT Marketplace</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Group Chats -->
+        <div class="sidebar-section">
+            <h4 class="glow-text">Group Chats</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.group_chat_home') }}">General Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.group_chat', group_id=1) }}">Web3 Enthusiasts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.group_chat', group_id=2) }}">Traders</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Fixed Top Section -->
+<div class="fixed-top-section">
+    <div class="container">
+        <h1 class="glow-text">Web3 at a Glance</h1>
+        <p class="glow-text">Welcome to the future of the internet! Web3 is a decentralized, user-centric ecosystem powered by blockchain technology. Explore, learn, and engage with the community.</p>
+        
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="web3Tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="feed-tab" data-bs-toggle="tab" data-bs-target="#feed" type="button" role="tab" aria-controls="feed" aria-selected="false">Feed</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="discovery-tab" data-bs-toggle="tab" data-bs-target="#discovery" type="button" role="tab" aria-controls="discovery" aria-selected="false">Discovery</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Flex Container for Main Content and Chat Forum -->
+<div class="content-wrapper">
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="tab-content" id="web3TabsContent">
+            <!-- About Tab -->
+            <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- About Web3 Section -->
+                        <div class="card futuristic-card mb-4">
+                            <div class="card-body">
+                                <h2 class="colorful-heading">About Web3</h2>
+                                <p class="glow-text">Web3 is the next generation of the internet, built on blockchain technology. It emphasizes decentralization, user ownership, and transparency. Here, you can explore the fundamentals of Web3, blockchain, and decentralized applications (dApps).</p>
+
+                                <div id="about-web3-section">
+                                    <h3 class="colorful-heading">🌟 Introduction to Web3 Community</h3>
+                                    <p class="glow-text">
+                                        The <strong>Web3 community</strong> is a rapidly growing ecosystem of developers, investors, entrepreneurs, and enthusiasts who are shaping the decentralized internet. Web3 represents the next evolution of the internet, moving away from centralized platforms (Web2) and embracing blockchain technology, decentralized applications (dApps), and digital ownership.
+                                    </p>
+
+                                    <h4 class="colorful-heading">🌐 What is Web3?</h4>
+                                    <p class="glow-text">
+                                        Web3 is a vision of the internet where users have full control over their data, digital assets, and identity. It is built on blockchain technology and leverages smart contracts, decentralized finance (DeFi), and non-fungible tokens (NFTs) to create trustless, permissionless systems.
+                                    </p>
+
+                                    <h4 class="colorful-heading">💡 Why is the Web3 Community Important?</h4>
+                                    <p class="glow-text">
+                                        The Web3 community plays a crucial role in:
+                                    </p>
+                                    <ul class="glow-text">
+                                        <li><strong>Decentralization</strong>: Eliminating reliance on intermediaries (like banks or social media giants).</li>
+                                        <li><strong>Ownership & Privacy</strong>: Empowering users with control over their digital identities and assets.</li>
+                                        <li><strong>Innovation</strong>: Driving new business models, including play-to-earn gaming, DAOs (Decentralized Autonomous Organizations), and decentralized social networks.</li>
+                                        <li><strong>Financial Inclusion</strong>: Providing global access to financial services without banks.</li>
+                                    </ul>
+
+                                    <h4 class="colorful-heading">🔑 Key Aspects of the Web3 Community</h4>
+                                    <p class="glow-text">
+                                        The Web3 community is made up of:
+                                    </p>
+                                    <ul class="glow-text">
+                                        <li><strong>Developers</strong>: Build decentralized applications (dApps) and contribute to open-source blockchain protocols.</li>
+                                        <li><strong>Investors & Enthusiasts</strong>: Support projects through crowdfunding, staking, or governance participation.</li>
+                                        <li><strong>Artists & Creators</strong>: Utilize NFTs to tokenize and monetize their work.</li>
+                                        <li><strong>Traders & DeFi Users</strong>: Engage in decentralized finance for lending, borrowing, and trading.</li>
+                                        <li><strong>DAO Members</strong>: Participate in decentralized governance, making collective decisions.</li>
+                                    </ul>
+
+                                    <h4 class="colorful-heading">🚀 Popular Web3 Platforms & Tools</h4>
+                                    <p class="glow-text">
+                                        Some of the most popular platforms and tools in the Web3 ecosystem include:
+                                    </p>
+                                    <ul class="glow-text">
+                                        <li><strong>Blockchains</strong>: Ethereum, Solana, Polygon.</li>
+                                        <li><strong>Wallets</strong>: MetaMask, Trust Wallet.</li>
+                                        <li><strong>Decentralized Exchanges (DEXs)</strong>: Uniswap, PancakeSwap.</li>
+                                        <li><strong>NFT Marketplaces</strong>: OpenSea, Rarible.</li>
+                                    </ul>
+
+                                    <h4 class="colorful-heading">✨ Conclusion</h4>
+                                    <p class="glow-text">
+                                        The Web3 community is shaping the future of the internet by promoting decentralization, transparency, and financial freedom. As blockchain technology evolves, Web3 will redefine industries, empower users, and create new opportunities for innovation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- How to Use MetaMask Section -->
+                        <div class="card futuristic-card mb-4">
+                            <div class="card-body">
+                                <h2 class="colorful-heading">📘 How to Use MetaMask</h2>
+                                <div id="metamask-section">
+                                    <h4 class="colorful-heading">1. What is MetaMask?</h4>
+                                    <p class="glow-text">
+                                        MetaMask is a cryptocurrency wallet and a gateway to blockchain applications. It allows users to store, send, and receive cryptocurrencies and interact with decentralized applications (dApps) on the Ethereum blockchain and other EVM-compatible blockchains.
+                                    </p>
+
+                                    <h4 class="colorful-heading">2. Installing & Setting Up MetaMask</h4>
+                                    <p class="glow-text">
+                                        <strong>Download MetaMask:</strong><br>
+                                        Available as a browser extension (Chrome, Firefox, Edge, Brave) or a mobile app (iOS & Android).<br>
+                                        Download from the official website: <a href="https://metamask.io/" target="_blank" class="glow-text">https://metamask.io/</a>
+                                    </p>
+                                    <p class="glow-text">
+                                        <strong>Create a Wallet:</strong><br>
+                                        Open MetaMask and click on "Create a Wallet."<br>
+                                        Set a strong password.<br>
+                                        Store the Secret Recovery Phrase securely (Never share it with anyone).
+                                    </p>
+                                    <p class="glow-text">
+                                        <strong>Adding Networks:</strong><br>
+                                        MetaMask supports multiple blockchains (Ethereum, Binance Smart Chain, Polygon, etc.).<br>
+                                        To add a new network, go to Settings → Networks → Add Network and enter the details.
+                                    </p>
+                                    <p class="glow-text">
+                                        <strong>Receiving & Sending Crypto:</strong><br>
+                                        To receive crypto, copy your wallet address and share it.<br>
+                                        To send crypto, enter the recipient's address, amount, and confirm the transaction.
+                                    </p>
+                                    <p class="glow-text">
+                                        <strong>Connecting to dApps:</strong><br>
+                                        Visit a Web3 website or dApp and click "Connect Wallet."<br>
+                                        Approve the connection via MetaMask.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Understanding Smart Contracts Section -->
+                        <div class="card futuristic-card mb-4">
+                            <div class="card-body">
+                                <h2 class="colorful-heading">📜 Understanding Smart Contracts</h2>
+                                <div id="smart-contracts-section">
+                                    <h4 class="colorful-heading">1. What is a Smart Contract?</h4>
+                                    <p class="glow-text">
+                                        A smart contract is a self-executing program stored on the blockchain that automatically executes actions when predefined conditions are met.
+                                    </p>
+
+                                    <h4 class="colorful-heading">2. How Smart Contracts Work</h4>
+                                    <p class="glow-text">
+                                        Written in Solidity (Ethereum) or other blockchain-specific languages.<br>
+                                        Deployed on the blockchain, making them immutable and transparent.<br>
+                                        Execute transactions without intermediaries.
+                                    </p>
+
+                                    <h4 class="colorful-heading">3. Key Components of a Smart Contract</h4>
+                                    <p class="glow-text">
+                                        <strong>State Variables:</strong> Store data on the blockchain.<br>
+                                        <strong>Functions:</strong> Define actions and logic.<br>
+                                        <strong>Modifiers:</strong> Add conditions to functions.<br>
+                                        <strong>Events:</strong> Notify off-chain applications of contract activity.
+                                    </p>
+
+                                    <h4 class="colorful-heading">4. Example of a Simple Smart Contract (Solidity)</h4>
+                                    <pre class="glow-text">
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract HelloWorld {
+    string public message;
+
+    constructor() {
+        message = "Hello, Blockchain!";
+    }
+
+    function updateMessage(string memory newMessage) public {
+        message = newMessage;
+    }
+}
+                                    </pre>
+                                    <p class="glow-text">
+                                        Stores a message on the blockchain.<br>
+                                        Allows users to update the message.
+                                    </p>
+
+                                    <h4 class="colorful-heading">5. Deploying & Interacting with Smart Contracts</h4>
+                                    <p class="glow-text">
+                                        <strong>Use Remix IDE:</strong> Write and test Solidity smart contracts.<br>
+                                        <strong>Deploy via MetaMask:</strong> Connect MetaMask to Remix and deploy the contract.<br>
+                                        <strong>Interact Using Ethers.js or Web3.js:</strong> Send transactions and read contract data.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Learning Resources -->
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="white-heading">📚 Learning Resources</h3>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card futuristic-card">
+                                            <div class="card-body">
+                                                <h5 class="white-heading">Beginner's Guide to Web3</h5>
+                                                <p class="glow-text">Learn the basics of Web3 and blockchain technology.</p>
+                                                <a href="#about-web3-section" class="btn btn-info">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card futuristic-card">
+                                            <div class="card-body">
+                                                <h5 class="white-heading">How to Use MetaMask</h5>
+                                                <p class="glow-text">A step-by-step guide to setting up and using MetaMask.</p>
+                                                <a href="#metamask-section" class="btn btn-info">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card futuristic-card">
+                                            <div class="card-body">
+                                                <h5 class="white-heading">Understanding Smart Contracts</h5>
+                                                <p class="glow-text">Explore the world of smart contracts and their applications.</p>
+                                                <a href="#smart-contracts-section" class="btn btn-info">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feed Tab -->
+            <div class="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab">
+                <div class="row">
+                    <!-- Announcements -->
+                    <div class="col-md-6">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">📢 Announcements</h3>
+                                <ul class="list-group">
+                                    {% for announcement in announcements %}
+                                        <li class="list-group-item futuristic-list-item">
+                                            <strong>{{ announcement.title }}</strong>
+                                            <p>{{ announcement.content|truncate(50) }}</p>
+                                            <small class="text-muted">{{ announcement.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trending Posts -->
+                    <div class="col-md-6">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">🔥 Trending Posts</h3>
+                                <ul class="list-group">
+                                    {% for post in posts|sort(attribute='upvotes', reverse=True)|slice(3) %}
+                                        <li class="list-group-item futuristic-list-item">
+                                            <strong>{{ post.author }}:</strong>
+                                            <p>{{ post.content|truncate(50) }}</p>
+                                            <small class="text-muted">{{ post.upvotes|default(0) }} 👍</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Posts (Grid View) -->
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">🌟 Featured Posts</h3>
+                                <div class="row">
+                                    {% for post in featured_posts %}
+                                        <div class="col-md-4">
+                                            <div class="card futuristic-card">
+                                                <div class="card-body">
+                                                    <h5 class="colorful-heading">{{ post.title }}</h5>
+                                                    <p class="glow-text">{{ post.content|truncate(100) }}</p>
+                                                    <a href="{{ url_for('main.view_post', post_id=post.id) }}" class="btn btn-info">Read More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post Button -->
+                <div class="fixed-post-button">
+                    <button class="btn btn-primary" onclick="openPostModal()">Create Post</button>
+                </div>
+
+                <!-- Scrollable Feed -->
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">📝 Feed</h3>
+                                <div class="feed">
+                                    {% for post in feed_posts %}
+                                        <div class="post">
+                                            <strong>{{ post.author }}:</strong>
+                                            <p>{{ post.content }}</p>
+                                            <small class="text-muted">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                            <div class="post-actions">
+                                                <button class="btn btn-sm btn-outline-success" onclick="likePost('{{ post.id }}')">👍 {{ post.likes|default(0) }}</button>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="dislikePost('{{ post.id }}')">👎 {{ post.dislikes|default(0) }}</button>
+                                                <button class="btn btn-sm btn-outline-info" onclick="toggleComments('{{ post.id }}')">💬 Comments</button>
+                                            </div>
+                                            <div class="comments" id="comments-{{ post.id }}" style="display: none;">
+                                                {% for comment in post.comments %}
+                                                    <div class="comment">
+                                                        <strong>{{ comment.author }}:</strong>
+                                                        <p>{{ comment.content }}</p>
+                                                        <small class="text-muted">{{ comment.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                                    </div>
+                                                {% endfor %}
+                                                <form method="POST" action="{{ url_for('main.add_comment', post_id=post.id) }}">
+                                                    <textarea class="form-control mb-2" name="comment" placeholder="Add a comment..." required></textarea>
+                                                    <button type="submit" class="btn btn-sm btn-info">Comment</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discovery Tab -->
+            <div class="tab-pane fade" id="discovery" role="tabpanel" aria-labelledby="discovery-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">🔍 Discovery</h3>
+                                <form method="GET" action="{{ url_for('main.search_posts') }}">
+                                    <input type="text" class="form-control mb-2" name="query" placeholder="Search for posts..." required>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </form>
+                                <div class="search-results">
+                                    {% if search_results %}
+                                        {% for post in search_results %}
+                                            <div class="post">
+                                                <strong>{{ post.author }}:</strong>
+                                                <p>{{ post.content }}</p>
+                                                <small class="text-muted">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="glow-text">No results found.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Tab -->
+            <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card futuristic-card">
+                            <div class="card-body">
+                                <h3 class="colorful-heading">📅 Events</h3>
+                                <p class="glow-text">Stay tuned for upcoming events!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Forum -->
+    <div class="chat-forum">
+        <div class="card futuristic-card">
+            <div class="card-body">
+                <h2 class="colorful-heading">Web3 Chat Forum</h2>
+                <div class="chat-box">
+                    {% for message in group_messages %}
+                        <div class="message">
+                            <strong>{{ message.sender }}:</strong>
+                            <p>{{ message.content }}</p>
+                            <small class="text-muted">{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+                <form method="POST" action="{{ url_for('main.send_group_message', group_id=group.id) }}">
+                    <textarea class="form-control mb-2" name="content" placeholder="Type your message..." required></textarea>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Futuristic Design -->
+<style>
+    /* Galaxy Background */
+    .galaxy-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(to bottom, #000428, #004e92);
+    }
+
+    .stars, .twinkling {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .stars {
+        background: #000 url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
+        animation: move-stars 200s linear infinite;
+    }
+
+    .twinkling {
+        background: transparent url('https://www.transparenttextures.com/patterns/starfield.png') repeat top center;
+        animation: move-twinkling 100s linear infinite;
+    }
+
+    @keyframes move-stars {
+        from { background-position: 0 0; }
+        to { background-position: -10000px 5000px; }
+    }
+
+    @keyframes move-twinkling {
+        from { background-position: 0 0; }
+        to { background-position: -10000px 5000px; }
+    }
+
+    /* Sidebar Toggle Icon */
+    .sidebar-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        color: #0dcaf0;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .toggle-icon {
+        font-size: 24px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px; /* Hidden by default */
+        width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        border-right: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 20px;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000; /* Ensure it's above other elements */
+    }
+
+    .sidebar.active {
+        left: 0; /* Show sidebar when active */
+    }
+
+    .sidebar-header {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-section {
+        margin-bottom: 20px;
+    }
+
+    .nav-link {
+        color: #0dcaf0;
+        margin-bottom: 10px;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .nav-link:hover {
+        color: #00bfff;
+    }
+
+    /* Fixed Top Section */
+    .fixed-top-section {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        z-index: 999; /* Below the sidebar toggle */
+    }
+
+    .fixed-top-section h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .fixed-top-section p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        margin-left: 20px; /* Shift tab bar to the left */
+    }
+
+    .nav-tabs .nav-link {
+        color: #0dcaf0;
+        border: 1px solid transparent;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .nav-tabs .nav-link.active {
+        background: rgba(0, 0, 0, 0.7);
+        border-color: rgba(0, 255, 255, 0.3);
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-top: 150px; /* Adjusted to avoid overlapping with the fixed top section */
+        padding: 20px;
+    }
+
+    /* Chat Forum */
+    .chat-forum {
+        position: fixed;
+        right: 0;
+        top: 200px; /* Adjusted to move it down and avoid overlapping with the fixed top section */
+        bottom: 0;
+        width: 400px; /* Increased width for a larger chat forum */
+        background: rgba(0, 0, 0, 0.8);
+        border-left: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 20px;
+        overflow-y: auto; /* Enable scrolling for overflow content */
+        z-index: 998; /* Ensure it's below the sidebar toggle */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-box {
+        flex: 1; /* Take up remaining space */
+        overflow-y: auto; /* Enable scrolling for overflow content */
+        margin-bottom: 20px; /* Increased margin for better spacing */
+        background: rgba(0, 0, 0, 0.5);
+        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 10px; /* Added padding for better spacing */
+    }
+
+    .chat-forum form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Space between textarea and button */
+    }
+
+    .chat-forum textarea {
+        width: 100%;
+        min-height: 50px; /* Minimum height for the textarea */
+        max-height: 200px; /* Maximum height for the textarea */
+        padding: 10px; /* Added padding for better text input */
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        color: #0dcaf0; /* Glowing text color */
+        resize: none; /* Disable manual resizing */
+        overflow-y: hidden; /* Hide scrollbar initially */
+    }
+
+    .chat-forum button {
+        width: 100%;
+        padding: 10px; /* Added padding for better button appearance */
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        color: #0dcaf0; /* Glowing text color */
+        transition: background 0.3s ease-in-out;
+    }
+
+    .chat-forum button:hover {
+        background: rgba(0, 255, 255, 0.2); /* Hover effect */
+    }
+
+    /* Message Styling */
+    .message {
+        margin-bottom: 15px; /* Increased margin for better spacing */
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        border-radius: 5px; /* Rounded corners for messages */
+    }
+
+    .message strong {
+        color: #0dcaf0; /* Glowing text color for usernames */
+    }
+
+    .message p {
+        margin: 5px 0; /* Adjusted margin for better spacing */
+        color: #fff; /* White text for message content */
+    }
+
+    .message small {
+        color: #888; /* Muted text color for timestamps */
+    }
+
+    /* Futuristic Card */
+    .futuristic-card {
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .futuristic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Glowing Text */
+    .glow-text {
+        color: #0dcaf0;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Colorful Headings */
+    .colorful-heading {
+        color: #ff6b6b; /* Red */
+        text-shadow: 0 0 5px rgba(255, 107, 107, 0.8);
+    }
+
+    .white-heading {
+        color: #ffffff; /* White */
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Planets */
+    .planet {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0));
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        animation: rotatePlanet linear infinite;
+    }
+
+    /* Planet 1 */
+    .planet-1 {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+        background: radial-gradient(circle, #ff6b6b, #ff0000);
+        animation-duration: 20s;
+    }
+
+    /* Planet 2 */
+    .planet-2 {
+        width: 80px;
+        height: 80px;
+        top: 50%;
+        left: 70%;
+        background: radial-gradient(circle, #4ecdc4, #1a535c);
+        animation-duration: 25s;
+    }
+
+    /* Planet 3 */
+    .planet-3 {
+        width: 120px;
+        height: 120px;
+        top: 70%;
+        left: 40%;
+        background: radial-gradient(circle, #ffe66d, #ff6b6b);
+        animation-duration: 30s;
+    }
+
+    /* Planet Rotation Animation */
+    @keyframes rotatePlanet {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Feed Styling */
+    .feed {
+        height: 400px; /* Adjust height as needed */
+        overflow-y: auto;
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        padding: 10px;
+        margin-bottom: 10px;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .post {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .post-actions {
+        margin-top: 10px;
+    }
+
+    .comments {
+        margin-top: 10px;
+        padding-left: 20px;
+        border-left: 2px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .comment {
+        margin-bottom: 10px;
+        padding: 5px;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    }
+
+    /* Fixed Post Button */
+    .fixed-post-button {
+        position: fixed;
+        bottom: 20px;
+        right: 440px; /* Adjusted to avoid overlapping with the chat forum */
+        z-index: 1000;
+    }
+</style>
+
+<!-- JavaScript for Sidebar Toggle and Post Interactions -->
+<script>
+    document.getElementById('sendMessageForm').addEventListener('submit', function (e) {
+        e.preventDefault();  // Prevent the default form submission
+
+        const formData = new FormData(this);  // Create a FormData object from the form
+
+        fetch("{{ url_for('main.send_group_message', group_id=group.id) }}", {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Append the new message to the chat box
+                const chatBox = document.querySelector('.chat-box');
+                const newMessage = document.createElement('div');
+                newMessage.classList.add('message');
+                newMessage.innerHTML = `
+                    <strong>{{ current_user.public_key }}:</strong>
+                    <p>${data.content}</p>
+                    <small class="text-muted">Just now</small>
+                `;
+                chatBox.appendChild(newMessage);
+
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Clear the form
+                this.reset();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending the message.');
+        });
+    });
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
+
+    function likePost(postId) {
+        // Implement like functionality
+        console.log(`Liked post ${postId}`);
+    }
+
+    function dislikePost(postId) {
+        // Implement dislike functionality
+        console.log(`Disliked post ${postId}`);
+    }
+
+    function toggleComments(postId) {
+        const commentsSection = document.getElementById(`comments-${postId}`);
+        commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function openPostModal() {
+        // Implement post creation modal
+        console.log('Open post creation modal');
+    }
+
+    // Auto-expand textarea as you type
+    const textarea = document.querySelector('.chat-forum textarea');
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto'; // Reset height
+        this.style.height = Math.min(this.scrollHeight, 200) + 'px'; // Set new height (max 200px)
+    });
+
+    // Ensure the chat forum doesn't overlap with other content
+    function adjustChatForumPosition() {
+        const chatForum = document.querySelector('.chat-forum');
+        const fixedTopSection = document.querySelector('.fixed-top-section');
+        if (fixedTopSection) {
+            const topSectionHeight = fixedTopSection.offsetHeight;
+            chatForum.style.top = `${topSectionHeight + 20}px`; // Add 20px for spacing
+        }
+    }
+    
+
+    // Adjust position on page load and window resize
+    window.addEventListener('load', adjustChatForumPosition);
+    window.addEventListener('resize', adjustChatForumPosition);
+</script>
+{% endblock %}

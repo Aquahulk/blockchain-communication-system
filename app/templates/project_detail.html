@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <!-- Project Title -->
+    <h1 class="glow-text">{{ project.title }}</h1>
+
+    <!-- Project Details -->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Project Description -->
+            <p>{{ project.description }}</p>
+
+            <!-- Project Image -->
+            {% if project.image %}
+            <img src="{{ url_for('static', filename=project.image) }}" class="img-fluid mb-4" alt="{{ project.title }}">
+            {% endif %}
+
+            <!-- Project Video -->
+            {% if project.video %}
+            <div class="embed-responsive embed-responsive-16by9 mb-4">
+                <iframe class="embed-responsive-item" src="{{ project.video }}" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+
+            <!-- Project Links -->
+            {% if project.links %}
+            <h4 class="glow-text">Links</h4>
+            <ul>
+                {% for link in project.links.split(',') %}
+                <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar: Likes, Dislikes, and Comments -->
+        <div class="col-md-4">
+            <div class="card futuristic-card">
+                <div class="card-body">
+                    <h5 class="card-title">Stats</h5>
+                    <p>👍 Likes: {{ project.likes }}</p>
+                    <p>👎 Dislikes: {{ project.dislikes }}</p>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="mt-4">
+                <h5 class="glow-text">Comments</h5>
+                {% for comment in project.comments %}
+                <div class="card futuristic-card mb-2">
+                    <div class="card-body">
+                        <strong>{{ comment.author }}:</strong>
+                        <p>{{ comment.content }}</p>
+                        <small class="text-muted">{{ comment.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Add Comment Form -->
+                <form method="POST" action="{{ url_for('main.comment_project', project_id=project.id) }}">
+                    <div class="mb-3">
+                        <textarea class="form-control" name="content" placeholder="Add a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

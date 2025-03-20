@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Marketplace</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            display: inline;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .navbar ul li a:hover {
+            color: #007bff;
+        }
+
+        .search-bar {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #connectWallet {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #connectWallet:hover {
+            background-color: #0056b3;
+        }
+
+        .profile-section img {
+            border-radius: 50%;
+        }
+
+        /* Profile Section Styles */
+        .profile {
+            padding: 20px;
+            display: none; /* Hidden by default */
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile-tabs button {
+            padding: 10px 20px;
+            border: none;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .profile-tabs button.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .profile-content {
+            display: none;
+        }
+
+        .profile-content.active {
+            display: block;
+        }
+
+        .chain-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chain-filter button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .chain-filter button.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* NFT Grid Styles */
+        .nft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .nft-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .nft-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .nft-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .nft-price {
+            color: #007bff;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .nft-card button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .nft-card button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chain Logos Styles */
+        .chain-logos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+
+        .chain-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .chain-item img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .chain-name {
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <div class="navbar">
+            <div class="logo">NFT Marketplace</div>
+            <ul>
+                <li><a href="#" onclick="showDiscover()">Discover</a></li>
+                <li><a href="#" onclick="showMint()">Mint</a></li>
+                <li><a href="#" onclick="showCreate()">Create</a></li>
+                <li><input type="text" placeholder="Search..." class="search-bar"></li>
+                <li><button id="connectWallet">Connect Wallet</button></li>
+                <li class="profile-section">
+                    <a href="#" onclick="showProfile()">
+                        <img src="https://via.placeholder.com/30" alt="Profile">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <div class="profile" id="profile">
+        <div class="profile-tabs">
+            <button onclick="showProfileTab('items')" class="active">Items</button>
+            <button onclick="showProfileTab('activity')">Activity</button>
+            <button onclick="showProfileTab('offers')">Offers</button>
+            <button onclick="showProfileTab('hidden')">Hidden</button>
+        </div>
+
+        <!-- Chain Filter -->
+        <div class="chain-filter">
+            <button onclick="filterByChain('all')" class="active">All Chains</button>
+            <button onclick="filterByChain('eth')">Ethereum</button>
+            <button onclick="filterByChain('sol')">Solana</button>
+            <button onclick="filterByChain('bnb')">Binance</button>
+            <button onclick="filterByChain('polygon')">Polygon</button>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content active" id="items">
+            <div class="nft-grid" id="itemsGrid">
+                <!-- Items will be dynamically populated here -->
+            </div>
+        </div>
+
+        <div class="profile-content" id="activity">
+            <div class="nft-grid" id="activityGrid">
+                <!-- Activity will be dynamically populated here -->
+            </div>
+        </div>
+
+        <div class="profile-content" id="offers">
+            <div class="nft-grid" id="offersGrid">
+                <!-- Offers will be dynamically populated here -->
+            </div>
+        </div>
+
+        <div class="profile-content" id="hidden">
+            <div class="nft-grid" id="hiddenGrid">
+                <!-- Hidden items will be dynamically populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chain Logos -->
+    <div class="chain-logos">
+        <div class="chain-item" onclick="showChainNFTs('btc', this)">
+            <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin Logo">
+            <span class="chain-name">BTC</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('eth', this)">
+            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum Logo">
+            <span class="chain-name">ETH</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('bnb', this)">
+            <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="Binance Logo">
+            <span class="chain-name">BNB</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('sol', this)">
+            <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana Logo">
+            <span class="chain-name">SOL</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('arb', this)">
+            <img src="https://cryptologos.cc/logos/arbitrum-arb-logo.png" alt="Arbitrum Logo">
+            <span class="chain-name">ARB</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('base', this)">
+            <img src="https://cryptologos.cc/logos/base-logo.png" alt="Base Logo">
+            <span class="chain-name">BASE</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('monad', this)">
+            <img src="https://cryptologos.cc/logos/monad-logo.png" alt="Monad Logo">
+            <span class="chain-name">MONAD</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('berachain', this)">
+            <img src="https://cryptologos.cc/logos/berachain-logo.png" alt="Berachain Logo">
+            <span class="chain-name">BERA</span>
+        </div>
+        <div class="chain-item" onclick="showChainNFTs('polygon', this)">
+            <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon Logo">
+            <span class="chain-name">POLYGON</span>
+        </div>
+    </div>
+
+    <!-- NFT Grid -->
+    <div class="nft-grid" id="nftGrid">
+        <!-- NFTs will be dynamically populated here -->
+    </div>
+
+    <script>
+        // Sample NFT data
+        const nfts = [
+            { id: 1, name: "NFT 1", chain: "eth", image: "https://via.placeholder.com/150", price: "0.1 ETH" },
+            { id: 2, name: "NFT 2", chain: "btc", image: "https://via.placeholder.com/150", price: "0.05 BTC" },
+            { id: 3, name: "NFT 3", chain: "sol", image: "https://via.placeholder.com/150", price: "0.2 SOL" },
+            { id: 4, name: "NFT 4", chain: "eth", image: "https://via.placeholder.com/150", price: "0.15 ETH" },
+            { id: 5, name: "NFT 5", chain: "bnb", image: "https://via.placeholder.com/150", price: "0.3 BNB" },
+        ];
+
+        // Show Profile Section
+        function showProfile() {
+            document.getElementById("profile").style.display = "block";
+            document.getElementById("nftGrid").style.display = "none";
+            document.querySelector(".chain-logos").style.display = "none";
+            renderProfileNFTs(nfts, "itemsGrid");
+        }
+
+        // Show Discover Section
+        function showDiscover() {
+            document.getElementById("profile").style.display = "none";
+            document.getElementById("nftGrid").style.display = "grid";
+            document.querySelector(".chain-logos").style.display = "flex";
+            renderNFTs(nfts);
+        }
+
+        // Show Profile Tab
+        function showProfileTab(tabId) {
+            document.querySelectorAll(".profile-content").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            document.getElementById(tabId).classList.add("active");
+
+            // Update active tab button
+            document.querySelectorAll(".profile-tabs button").forEach(button => {
+                button.classList.remove("active");
+            });
+            document.querySelector(.profile-tabs button[onclick="showProfileTab('${tabId}')"]).classList.add("active");
+        }
+
+        // Filter by Chain
+        function filterByChain(chain) {
+            const grids = document.querySelectorAll(".profile-content.active .nft-grid");
+            grids.forEach(grid => {
+                const nfts = grid.querySelectorAll(".nft-card");
+                nfts.forEach(nft => {
+                    if (chain === "all" || nft.dataset.chain === chain) {
+                        nft.style.display = "block";
+                    } else {
+                        nft.style.display = "none";
+                    }
+                });
+            });
+
+            // Update active chain button
+            document.querySelectorAll(".chain-filter button").forEach(button => {
+                button.classList.remove("active");
+            });
+            document.querySelector(.chain-filter button[onclick="filterByChain('${chain}')"]).classList.add("active");
+        }
+
+        // Render NFTs in Profile Section
+        function renderProfileNFTs(nfts, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = ""; // Clear existing NFTs
+
+            nfts.forEach(nft => {
+                const nftCard = `
+                    <div class="nft-card" data-chain="${nft.chain}">
+                        <img src="${nft.image}" alt="${nft.name}">
+                        <div class="nft-title">${nft.name}</div>
+                        <div class="nft-price">${nft.price}</div>
+                        <button>View Details</button>
+                    </div>
+                `;
+                grid.innerHTML += nftCard;
+            });
+        }
+
+        // Render NFTs
+        function renderNFTs(filteredNFTs) {
+            const nftGrid = document.getElementById("nftGrid");
+            nftGrid.innerHTML = ""; // Clear existing NFTs
+
+            filteredNFTs.forEach(nft => {
+                const nftCard = `
+                    <div class="nft-card" data-chain="${nft.chain}">
+                        <img src="${nft.image}" alt="${nft.name}">
+                        <div class="nft-title">${nft.name}</div>
+                        <div class="nft-price">${nft.price}</div>
+                        <button>Buy Now</button>
+                    </div>
+                `;
+                nftGrid.innerHTML += nftCard;
+            });
+        }
+
+        // Initial render (show all NFTs)
+        renderNFTs(nfts);
+    </script>
+</body>
+</html>

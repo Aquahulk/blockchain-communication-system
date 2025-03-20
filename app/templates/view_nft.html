@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center">{{ nft.name }}</h1>
+            <img src="{{ nft.image }}" alt="{{ nft.name }}" class="img-fluid mb-2">
+            <p class="glow-text">{{ nft.description }}</p>
+            <p class="glow-text">Price: {{ nft.price }} ETH</p>
+            <p class="glow-text">Seller: {{ nft.seller }}</p>
+            <p class="glow-text">Owner: {{ nft.owner }}</p>
+            {% if nft.owner != current_user.public_key %}
+                <form method="POST" action="{{ url_for('main.buy_nft', nft_id=nft.id) }}">
+                    <button type="submit" class="btn btn-success w-100">Buy NFT</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

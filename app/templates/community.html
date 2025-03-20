@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <!-- Sub-Community Navigation -->
+    <div class="text-center mb-4">
+        <h2 class="glow-text">Explore Communities</h2>
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('main.web3_community') }}" class="btn btn-outline-primary">Web3</a>
+            <a href="{{ url_for('main.trading_community') }}" class="btn btn-outline-primary">Trading</a>
+            <a href="{{ url_for('main.competition_community') }}" class="btn btn-outline-primary">Competition</a>
+            <a href="{{ url_for('main.blockchain_community') }}" class="btn btn-outline-primary">Blockchain</a>
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">Projects</a>
+            <a href="{{ url_for('main.nft_marketplace_community') }}" class="btn btn-outline-primary">NFT marketplace</a>
+            <!-- Add more sub-communities as needed -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="glow-text">Welcome to the Community</h3>
+            <p>Select a sub-community to get started.</p>
+        </div>
+
+        <!-- Right Side: Trending Posts -->
+        <div class="col-md-4">
+            <div class="card futuristic-card">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: white;">Trending Posts</h5>
+                    <ul class="list-group">
+                        {% for post in posts|sort(attribute='upvotes', reverse=True)|slice(3) %}
+                            <li class="list-group-item futuristic-list-item">
+                                <strong style="color: white;">{{ post.author }}:</strong>
+                                <p style="color: white;">{{ post.content|truncate(50) }}</p>
+                                <small class="text-muted" style="color: white;">{{ post.upvotes|default(0) }} 👍</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Futuristic Design -->
+<style>
+    body {
+        background: black;
+        font-family: Arial, sans-serif;
+        color: white; /* Default text color */
+    }
+
+    /* Glowing Text */
+    .glow-text {
+        color: #0dcaf0;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Futuristic Card */
+    .futuristic-card {
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .futuristic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Futuristic List Items */
+    .futuristic-list-item {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        color: white; /* White text for list items */
+        margin-bottom: 10px;
+        border-radius: 5px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .futuristic-list-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    /* Buttons */
+    .btn-outline-primary {
+        border-color: #0dcaf0;
+        color: #0dcaf0;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #0dcaf0;
+        color: black;
+    }
+</style>
+{% endblock %}
